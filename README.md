@@ -191,4 +191,4 @@ Applications built with just React usually have a single root DOM node. If you a
 
 React DOM compares the element and its children to the previous one, and only applies the DOM updates necessary to bring the DOM to the desired state.
 
-[renderingDomUpdates]: readme-img/renderingDomUpdates.gif "React only updates what is necessary"
+![React only updates what is necessary](: )readme-img/renderingDomUpdates.gif)
