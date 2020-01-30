@@ -6,7 +6,7 @@
 - [Microsoft Visual Studio Code](https://code.visualstudio.com/)
 - [Git bash](https://git-scm.com/downloads)
 
-### create-react-app
+## create-react-app
 
 - [Github](https://github.com/facebook/create-react-app)
 
@@ -83,7 +83,7 @@ export default App;
 
 ```
 
-### Hello World
+## Hello World
 
 From this point on, use the index.js file. 
 
@@ -109,7 +109,7 @@ serviceWorker.unregister();
 
 This will display a heading saying "Hello, world!" on the page. 
 
-### Introducing JSX
+## Introducing JSX
 
 ```jsx
 const elment = <h1>Hello, world</h1>
