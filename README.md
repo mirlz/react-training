@@ -10,6 +10,8 @@
 
 - [Github](https://github.com/facebook/create-react-app)
 
+Create React App is an officially supported way to create single-page React applications. It offers a modern build setup with no configuration.
+
 ```bash
 npx create-react-app [project name]
 cd [project name]
@@ -22,10 +24,10 @@ npm start
 node_modules
 public
 src
-   | - App.js
-   | - index.css
-   | - index.js
-   | - serviceWorker.js
+├── App.js
+├── index.css
+├── index.js
+├── serviceWorker.js
 package.json
 package-lock.json
 README.md
@@ -118,7 +120,7 @@ const elment = <h1>Hello, world</h1>
 This line is neither a string nor HTML.
 It's JSX, and it is a syntax extension to JavaScript.
 
-#### Embedding Expressions in JSX
+### Embedding Expressions in JSX
 
 ```jsx
 const name = 'Lalaland';
@@ -154,7 +156,7 @@ ReactDOM.render(
 );
 ```
 
-#### Specifying Attributes with JSX
+### Specifying Attributes with JSX
 
 Specifying string literals as attributes:
 
@@ -165,3 +167,28 @@ Embedding Javascript expression in an attribute
 `const element = <img src={user.avatarUrl}></img>;`
 
 Don’t put quotes around curly braces when embedding a JavaScript expression in an attribute. You should either use quotes (for string values) or curly braces (for expressions), but not both in the same attribute.
+
+## Rendering Elements
+
+> Elements are the smallest building blocks of React apps.
+
+An element describes what you want to see on the screen:
+
+`const element = <h1>Hello, world</h1>;`
+Unlike browser DOM elements, React elements are plain objects, and are cheap to create. React DOM takes care of updating the DOM to match the React elements.
+
+> One might confuse elements with a more widely known concept of “components”. We will introduce components in the next section. Elements are what components are “made of”.
+
+### Rendering an Element into the DOM
+
+`<div id="root"></div>`
+
+We call this a “root” DOM node because everything inside it will be managed by React DOM.
+
+Applications built with just React usually have a single root DOM node. If you are integrating React into an existing app, you may have as many isolated root DOM nodes as you like.
+
+### React only Updates what's Necessary
+
+React DOM compares the element and its children to the previous one, and only applies the DOM updates necessary to bring the DOM to the desired state.
+
+[renderingDomUpdates]: readme-img/renderingDomUpdates.gif "React only updates what is necessary"
