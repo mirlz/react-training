@@ -85,6 +85,8 @@ export default App;
 
 ```
 
+---
+
 ## Hello World
 
 From this point on, use the index.js file. 
@@ -168,6 +170,8 @@ Embedding Javascript expression in an attribute
 
 Don’t put quotes around curly braces when embedding a JavaScript expression in an attribute. You should either use quotes (for string values) or curly braces (for expressions), but not both in the same attribute.
 
+--- 
+
 ## Rendering Elements
 
 > Elements are the smallest building blocks of React apps.
@@ -217,6 +221,8 @@ React DOM compares the element and its children to the previous one, and only ap
 
 ![React only updates what is necessary](readme-img/renderingDomUpdates.gif)
 
+---
+
 ## Components and Props
 
 > Components let you split the UI into independent, reusable pieces, and think about each piece in isolation. 
@@ -243,4 +249,3 @@ class App extends Component {
   }
 }
 ```
-
