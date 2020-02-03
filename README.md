@@ -187,8 +187,60 @@ We call this a “root” DOM node because everything inside it will be managed 
 
 Applications built with just React usually have a single root DOM node. If you are integrating React into an existing app, you may have as many isolated root DOM nodes as you like.
 
+### Updating the Rendered Element
+
+React elements are immutable. Once you create an element, you can’t change its children or attributes. An element is like a single frame in a movie: it represents the UI at a certain point in time.
+
+So far, the only way to update the UI is to create a new element, and pass it to `ReactDOM.render()`.
+
+```jsx
+function tick() {
+  const element = (
+    <div>
+      <h1>Hello, world!</h1>
+      <h2>It is {new Date().toLocaleTimeString()}.</h2>
+    </div>
+  );
+  ReactDOM.render(element, document.getElementById('root'));
+}
+
+setInterval(tick, 1000);
+```
+
+It calls `ReactDOM.render()` every second from a `setInterval()` callback.
+
+> In practice, most React apps only call ReactDOM.render() once. 
+
 ### React only Updates what's Necessary
 
 React DOM compares the element and its children to the previous one, and only applies the DOM updates necessary to bring the DOM to the desired state.
 
 ![React only updates what is necessary](readme-img/renderingDomUpdates.gif)
+
+## Components and Props
+
+> Components let you split the UI into independent, reusable pieces, and think about each piece in isolation. 
+
+### Functional and Class Components
+
+#### Functional Component 
+
+```jsx
+const Button = (props) => {
+  return (
+    <button>{props.text}</button>
+  )
+}
+```
+
+#### Class Component
+
+```jsx
+class App extends Component {
+  state = {count: 1};
+  render() {
+    <div> ... </div>
+  }
+}
+```
+
