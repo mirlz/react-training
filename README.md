@@ -272,3 +272,164 @@ ReactDOM.render(
 > **Note**: Always start component names with a capital letter.
 >
 > React treats components starting with lowercase letters as DOM tags. For example, `<div />` represents an HTML div tag, but `<Welcome />` represents a component and requires Welcome to be in scope.
+
+### Composing Components
+
+Componets can refer to other components in their output.
+
+```jsx
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+
+function App() {
+  return (
+    <div>
+      <Welcome name="Sara" />
+      <Welcome name="Cahal" />
+      <Welcome name="Edite" />
+    </div>
+  );
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
+```
+
+### Extracting Components
+
+Consider the below component.
+
+```jsx
+function Comment(props) {
+  return (
+    <div className="Comment">
+      <div className="UserInfo">
+        <img className="Avatar"
+          src={props.author.avatarUrl}
+          alt={props.author.name}
+        />
+        <div className="UserInfo-name">
+          {props.author.name}
+        </div>
+      </div>
+      <div className="Comment-text">
+        {props.text}
+      </div>
+      <div className="Comment-date">
+        {formatDate(props.date)}
+      </div>
+    </div>
+  );
+}
+```
+
+It accepts `author`(object), `text`(string), and `date`(date object) as props, and describes a comment item on a social website. 
+
+A few components can be extracted so it can be reused for other components that might need them. 
+
+#### 1. Abstract the `Avatar` from the component 
+
+```jsx 
+function Avatar(props) {
+  return (
+    <img className="Avatar"
+      src={props.user.avatarUrl}
+      alt={props.user.name}
+    />
+
+  );
+}
+```
+
+The `Avatar` doesn’t need to know that it is being rendered inside a `Comment`. This is why we have given its prop a more generic name: `user` rather than `author`.
+
+We recommend naming props from the component’s own point of view rather than the context in which it is being used.
+
+#### 2. After extracting the `Avatar` part from `Comment`
+
+```jsx
+function Comment(props) {
+  return (
+    <div className="Comment">
+      <div className="UserInfo">
+        <Avatar user={props.author} />
+        <div className="UserInfo-name">
+          {props.author.name}
+        </div>
+      </div>
+      <div className="Comment-text">
+        {props.text}
+      </div>
+      <div className="Comment-date">
+        {formatDate(props.date)}
+      </div>
+    </div>
+  );
+}
+```
+
+#### 3. Extract a `UserInfo` component that renders the `Avatar`
+
+```jsx 
+function UserInfo(props) {
+  return (
+    <div className="UserInfo">
+      <Avatar user={props.user} />
+      <div className="UserInfo-name">
+        {props.user.name}
+      </div>
+    </div>
+  );
+}
+```
+
+#### 4. After extracting `UserInfo` part from `Comment`
+
+```jsx
+function Comment(props) {
+  return (
+    <div className="Comment">
+      <UserInfo user={props.author} />
+      <div className="Comment-text">
+        {props.text}
+      </div>
+      <div className="Comment-date">
+        {formatDate(props.date)}
+      </div>
+    </div>
+  );
+}
+```
+
+> A good rule of thumb is that if a part of your UI is used several times (`Button`, `Panel`, `Avatar`), or is complex enough on its own (`App`, `FeedStory`, `Comment`), it is a good candidate to be a reusable component.
+
+### Props are Read-Only
+
+**Never** modify a component's props.
+
+```jsx
+function sum(a, b) {
+  return a + b;
+}
+```
+
+The above is a `pure` function because they do not attempt to change the inputs.
+
+In contrast, this function is impure because it changes its own input:
+
+```jsx
+function withdraw(account, amount) {
+  account.total -= amount;
+}
+```
+
+React is pretty flexible but it has a single strict rule:
+
+**All React components must act like pure functions with respect to their props**.
+
+## State and Lifycycle
+
+Consider the ticking clock example from [previous section](#updating-the-rendered-element), we call `ReactDOM.render() to change the rendered output. 
