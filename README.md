@@ -702,3 +702,75 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+
+### Using State Correctly
+
+1. Do not modify state directly.
+
+```jsx
+//wrong
+this.state.comment = "yo";
+
+//use setState()
+this.setState({comment: 'lalala'});
+```
+
+The only plaec where you can assign this.state is the constructor.
+
+2. State updates may be asynchronous
+
+React may batch multiple `setState()` calls into a single update for performance.
+
+Because `this.props` and `this.state` may be updated asynchronously, you should not rely on their values for calculating the next state.
+
+```jsx
+//wrong
+this.setState({
+  counter: this.state.counter + this.props.increment
+})
+
+//use a second form of setState() that acepts a function rather than an object.
+//that function will receive the previous tate as the first argument, and the props at the time the update is applied as the second argument
+this.setState((state, props) => {
+  return {
+    counter: state.counter + props.increment
+  }
+});
+```
+
+3. State updates are merged
+
+```jsx
+//state may contain several independent variables
+constructor(props) {
+  super(props);
+  this.state = {
+    posts: [],
+    comments: []
+  };
+}
+//but you can update them separately
+componentDidMount() {
+  fetchPosts().then(response => {
+    this.setState({
+      posts: response.posts
+    });
+  });
+
+  fetchComments().then(response => {
+    this.setState({
+      comments: response.comments
+    });
+  });
+}
+```
+
+The merging is shallow, so `this.setState({comments})` leaves `this.state.posts` intact, but completely replaces this.state.comments.
+
+--- 
+
+## Handling Events
+
+- React events are named using camelCase, rather than lowercase.
+- With JSX you pass a function as the event handler, rather than a string.
+
