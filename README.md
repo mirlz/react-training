@@ -532,13 +532,13 @@ To implement this, we need to add "state" to the `Clock` component.
 
 ### Convering a Function to a Class
 
-1. Create an `ES6` class, with the same name, that extends `React.Component`.
-2. Add a single empty method to it called `render()`.
-3. Move the body of the function into the `render()` method.
-4. Replace `props` with `this.props` in the `render()` body.
-5. Delete the remaining empty function declaration.
+#### 1. Create an `ES6` class, with the same name, that extends `React.Component`.
+#### 2. Add a single empty method to it called `render()`.
+#### 3. Move the body of the function into the `render()` method.
+#### 4. Replace `props` with `this.props` in the `render()` body.
+#### 5. Delete the remaining empty function declaration.
 
-```jsx
+```jsxs
 class Clock extends React.Component {
   render() {
     return (
@@ -557,7 +557,7 @@ The `render` method will be called each time an update happens, but as long as w
 
 ### Adding Local State to Class
 
-1. Replace `this.props.date` with `this.state.date` in the `render()` method:
+#### 1. Replace `this.props.date` with `this.state.date` in the `render()` method:
 
 ```jsx
 class Clock extends React.Component {
@@ -572,7 +572,7 @@ class Clock extends React.Component {
 }
 ```
 
-2. Add a class constructor that assigns the initial `this.state`:
+#### 2. Add a class constructor that assigns the initial `this.state`:
 
 ```jsx
 class Clock extends React.Component {
@@ -593,7 +593,7 @@ class Clock extends React.Component {
 }
 ```
 
-3. Remove `date` prop from the `<Clock />` elment:
+#### 3. Remove `date` prop from the `<Clock />` elment:
 
 ```jsx
 ReactDOM.render(
@@ -602,7 +602,7 @@ ReactDOM.render(
 );
 ```
 
-4. Final result (without the tick)
+#### 4. Final result (without the tick)
 
 ```jsx
 class Clock extends React.Component {
@@ -705,7 +705,7 @@ ReactDOM.render(
 
 ### Using State Correctly
 
-1. Do not modify state directly.
+#### 1. Do not modify state directly.
 
 ```jsx
 //wrong
@@ -717,7 +717,7 @@ this.setState({comment: 'lalala'});
 
 The only plaec where you can assign this.state is the constructor.
 
-2. State updates may be asynchronous
+#### 2. State updates may be asynchronous
 
 React may batch multiple `setState()` calls into a single update for performance.
 
@@ -738,7 +738,7 @@ this.setState((state, props) => {
 });
 ```
 
-3. State updates are merged
+#### 3. State updates are merged
 
 ```jsx
 //state may contain several independent variables
@@ -767,10 +767,9 @@ componentDidMount() {
 
 The merging is shallow, so `this.setState({comments})` leaves `this.state.posts` intact, but completely replaces this.state.comments.
 
---- 
+---
 
 ## Handling Events
 
 - React events are named using camelCase, rather than lowercase.
 - With JSX you pass a function as the event handler, rather than a string.
-
