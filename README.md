@@ -430,6 +430,237 @@ React is pretty flexible but it has a single strict rule:
 
 **All React components must act like pure functions with respect to their props**.
 
+---
+
 ## State and Lifycycle
 
-Consider the ticking clock example from [previous section](#updating-the-rendered-element), we call `ReactDOM.render() to change the rendered output. 
+Consider the ticking clock example from [previous section](#updating-the-rendered-element), we call `ReactDOM.render() to change the rendered output.
+
+```jsx
+function tick() {
+  const element = (
+    <div>
+      <h1>Hello, world!</h1>
+      <h2>It is {new Date().toLocaleTimeString()}.</h2>
+    </div>
+  );
+  ReactDOM.render(element, document.getElementById('root'));
+}
+
+setInterval(tick, 1000);
+```
+
+In this section, we will learn how to make the `Clock` component truly reusable and encapsulated. It will set up its own timer and update itself every second.
+
+We can start by encapsulating how the clock looks:
+
+```jsx
+function Clock(props) {
+  return (
+    <div>
+      <h1>Hello, world!</h1>
+      <h2>It is {props.date.toLocaleTimeString()}.</h2>
+    </div>
+  );
+}
+
+function tick() {
+  ReactDOM.render(
+    <Clock date={new Date()} />,
+    document.getElementById('root')
+  );
+}
+
+setInterval(tick, 1000);
+```
+
+Currently, the ticking is done externally, this should be an implmentation detail of the `Clock` component.
+Ideally we want to write this once and have the `Clock` component update itself: 
+
+```jsx
+ReactDOM.render(
+  <Clock />,
+  document.getElementById('root')
+);
+```
+
+To implement this, we need to add "state" to the `Clock` component.
+
+**State is similar to props, but it is private and fully controlled by its component.**
+
+### React Lifecycle
+
+![React lifecycle](readme-img/lifecycle.png)
+
+### Convering a Function to a Class
+
+1. Create an `ES6` class, with the same name, that extends `React.Component`.
+2. Add a single empty method to it called `render()`.
+3. Move the body of the function into the `render()` method.
+4. Replace `props` with `this.props` in the `render()` body.
+5. Delete the remaining empty function declaration.
+
+```jsx
+class Clock extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.props.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+```
+
+`Clock` is now defined as a class rather than a function.
+
+The `render` method will be called each time an update happens, but as long as we render `<Clock />` into the same DOM node, only a single instance of the `Clock` class will be used. This lets us use additional features such as local state and lifecycle methods.
+
+### Adding Local State to Class
+
+1. Replace `this.props.date` with `this.state.date` in the `render()` method:
+
+```jsx
+class Clock extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+```
+
+2. Add a class constructor that assigns the initial `this.state`:
+
+```jsx
+class Clock extends React.Component {
+  constructor(props) {
+    // class components should always call the base constructor with props.
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+```
+
+3. Remove `date` prop from the `<Clock />` elment:
+
+```jsx
+ReactDOM.render(
+  <Clock />,
+  document.getElementById('root')
+);
+```
+
+4. Final result (without the tick)
+
+```jsx
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Clock />,
+  document.getElementById('root')
+);
+```
+
+### Adding Lifecyle Methods to a Class
+
+- We want to *set up a timer* whenever the `Clock` is rendered to the DOM for the first time. This is called “mounting” in React.
+- We also want to *clear that timer* whenever the DOM produced by the `Clock` is removed. This is called “unmounting” in React.
+
+```jsx
+componentDidMount() {
+  this.timerID = setInterval(
+    () => this.tick(),
+    1000
+  );
+}
+```
+
+The `componentDidMount()` method runs after the component output has been rendered to the DOM. This is a good place to set up a timer.
+
+We will tear down the timer in the `componentWillUnmount()` lifecycle method:
+
+```jsx
+componentWillUnmount() {
+  clearInterval(this.timerID);
+}
+```
+
+Finally, we will implement a method called `tick()` that the `Clock` component will run every second.
+
+```jsx
+tick() {
+    this.setState({
+      date: new Date()
+    });
+  }
+```
+
+It will use `this.setState()` to schedule updates to the component local state:
+
+```jsx
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  tick() {
+    this.setState({
+      date: new Date()
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Clock />,
+  document.getElementById('root')
+);
+```

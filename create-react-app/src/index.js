@@ -5,27 +5,23 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 // ReactDOM.render(<App />, document.getElementById('root'));
+function Clock(props) {
+  return (
+    <div>
+      <h1>Hello, world!</h1>
+      <h2>It is {props.date.toLocaleTimeString()}.</h2>
+    </div>
+  );
+}
 
-function Example() {
-    const [count, setCount] = useState(0);
-  
-    // Similar to componentDidMount and componentDidUpdate:
-    useEffect(() => {
-      // Update the document title using the browser API
-      console.log(`You clicked ${count} times`);
-    });
-  
-    return (
-      <div>
-        <p>You clicked {count} times</p>
-        <button onClick={() => setCount(count + 1)}>
-          Click me
-        </button>
-      </div>
-    );
-  }
+function tick() {
+  ReactDOM.render(
+    <Clock date={new Date()} />,
+    document.getElementById('root')
+  );
+}
 
-ReactDOM.render(<Example/>, document.getElementById('root'));
+setInterval(tick, 1000);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
