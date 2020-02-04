@@ -532,11 +532,11 @@ To implement this, we need to add "state" to the `Clock` component.
 
 ### Convering a Function to a Class
 
-#### 1. Create an `ES6` class, with the same name, that extends `React.Component`.
-#### 2. Add a single empty method to it called `render()`.
-#### 3. Move the body of the function into the `render()` method.
-#### 4. Replace `props` with `this.props` in the `render()` body.
-#### 5. Delete the remaining empty function declaration.
+1. Create an `ES6` class, with the same name, that extends `React.Component`.
+2. Add a single empty method to it called `render()`.
+3. Move the body of the function into the `render()` method.
+4. Replace `props` with `this.props` in the `render()` body.
+5. Delete the remaining empty function declaration.
 
 ```jsxs
 class Clock extends React.Component {
@@ -715,7 +715,7 @@ this.state.comment = "yo";
 this.setState({comment: 'lalala'});
 ```
 
-The only plaec where you can assign this.state is the constructor.
+The only place where you can assign this.state is the constructor.
 
 #### 2. State updates may be asynchronous
 
