@@ -530,7 +530,7 @@ To implement this, we need to add "state" to the `Clock` component.
 
 ![React lifecycle](readme-img/lifecycle.png)
 
-### Convering a Function to a Class
+### Converting a Function to a Class
 
 1. Create an `ES6` class, with the same name, that extends `React.Component`.
 2. Add a single empty method to it called `render()`.
@@ -850,3 +850,120 @@ ReactDOM.render(
 ---
 
 ## Conditional Rendering
+
+In React, you can create distinct components that encapsulate behavior you need. Then, you can render only some of them, depending on the state of your application.
+
+```jsx
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {
+    return <UserGreeting />;
+  }
+  return <GuestGreeting />;
+}
+
+ReactDOM.render(
+  <Greeting isLoggedIn={false} />,
+  document.getElementById('root')
+);
+```
+
+### Inline if-else with conditional operator 
+
+```jsx
+render() {
+  const isLoggedIn = this.state.isLoggedIn;
+  return (
+    <div>
+      The user is <b>{isLoggedIn ? 'currently' : 'not'}</b> logged in.
+    </div>
+  );
+}
+
+//for larger expressions
+render() {
+  const isLoggedIn = this.state.isLoggedIn;
+  return (
+    <div>
+      {isLoggedIn ? (
+        <LogoutButton onClick={this.handleLogoutClick} />
+      ) : (
+        <LoginButton onClick={this.handleLoginClick} />
+      )}
+    </div>
+  );
+}
+```
+
+### Preventing Componet from Rendering
+
+In rare cases you might want a component to hide itself even though it was rendered by another component. To do this return `null` instead of its render output.
+
+```jsx
+function WarningBanner(props) {
+  if (!props.warn) {
+    return null;
+  }
+
+  return (
+    <div className="warning">
+      Warning!
+    </div>
+  );
+}
+
+class Page extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {showWarning: true};
+    this.handleToggleClick = this.handleToggleClick.bind(this);
+  }
+
+  handleToggleClick() {
+    this.setState(state => ({
+      showWarning: !state.showWarning
+    }));
+  }
+
+  render() {
+    return (
+      <div>
+        <WarningBanner warn={this.state.showWarning} />
+        <button onClick={this.handleToggleClick}>
+          {this.state.showWarning ? 'Hide' : 'Show'}
+        </button>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Page />,
+  document.getElementById('root')
+);
+```
+
+> Returning `null` from a component’s `render` method does not affect the firing of the component’s lifecycle methods. For instance `componentDidUpdate` will still be called.
+
+---
+
+## Lists and Keys
+
+### Arrow functions
+
+```jsx
+//function
+function lalaland(lalala) {
+  return lalala + ' ' + 'weee';
+}
+
+//in arrow function
+const lalaland = (lalala) => {
+  return lalala + ' ' + 'weee'
+};
+
+//map list
+const numbers = [1, 2, 3, 4, 5];
+const doubled = numbers.map((number) => number * 2);
+console.log(doubled);
+```
